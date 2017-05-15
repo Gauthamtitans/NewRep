@@ -1,0 +1,47 @@
+package webTable;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import wrappers.WebTable;
+
+public class TrainSort extends WebTable {
+	WebElement eachRow;
+	String[] temp;
+	
+	@Test
+	public  void learnWebTable() throws InterruptedException{
+		System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.get("https://erail.in/");
+		driver.findElement(By.id("txtStationFrom")).clear();
+		driver.findElement(By.id("txtStationFrom")).sendKeys("MAS", Keys.TAB);
+		driver.findElement(By.id("txtStationTo")).clear();
+		driver.findElement(By.id("txtStationTo")).sendKeys("NDLS", Keys.TAB);
+		Thread.sleep(5000);
+		driver.findElement(By.id("buttonFromTo")).click();
+		WebElement table = driver.findElement(By.xpath("//table[@class='DataTable TrainList']"));
+		List <WebElement> allRows = table.findElements(By.tagName("tr"));
+		System.out.println(allRows.size());
+		WebElement firstRow = allRows.get(0);
+		List<WebElement> allColumns = firstRow.findElements(By.tagName("td"));
+		System.out.println(allColumns.size());
+		System.out.println(allColumns);
+		//String train = eachRow.findElements(By.tagName("td")).get(1).getText();
+		for (WebElement eachRow : allRows) {
+			String train1 = eachRow.findElements(By.tagName("td")).get(1).getText();
+			System.out.println(train1);
+			List <WebElement> x = push(train1.x);
+			//List<WebElement> train1 =temp +train;
+		}
+		//System.out.println(allRows);
+		//System.out.println(train);
+		driver.close();
+	}
+}
